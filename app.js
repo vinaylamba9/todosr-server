@@ -4,12 +4,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 // UTILS
-const getPreviousDates = require('./utils');
+const getPreviousDates = require('./src/utils');
 
 // MODELS
-require('./models/User')
-require('./models/Task')
-require('./models/Dates')
+require('./src/models/User')
+require('./src/models/Task')
+require('./src/models/Dates')
 
 const app = express()
 const PORT = process.env.PORT || 8080
