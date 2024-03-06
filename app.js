@@ -47,13 +47,13 @@ app.post('/create-user', async (req, res) => {
 })
 
 app.get('/get-spaced-repetition', async (req, res) => {
-    const {userID} = req.query;
+    const {userID, timeZoneOffset} = req.query;
     try {
         const query = await Dates.findOne({userID}, 'dates');
         if(!query) {
             return res.status(400).send('Something went wrong');
         }
-        const datesList = getPreviousDates(query.dates);
+        const datesList = getPreviousDates(query.dates, timeZoneOffset);
         if(datesList) {
             const tasks = await Task.find({userID, dateCreated: {$in: datesList}});
             return res.status(200).send({tasks, status: 200});
@@ -67,10 +67,10 @@ app.get('/get-spaced-repetition', async (req, res) => {
 })
 
 app.get('/get-today-tasks', async (req, res) => {
-    const {userID} = req.query;
+    const {userID, timeZoneOffset} = req.query;
     try {
         // passing [0] for today
-        const datesList = getPreviousDates([0]);
+        const datesList = getPreviousDates([0], timeZoneOffset);
         if(datesList) {
             const tasks = await Task.find({userID, dateCreated: {$in: datesList}});
             return res.status(200).send({tasks, status: 200});
