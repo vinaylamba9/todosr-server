@@ -132,6 +132,21 @@ app.put('/update-task', async (req, res) => {
     }
 })
 
+app.delete('/delete-task', async (req, res) => {
+    const {taskID} = req.body;
+    try {
+        const task = await Task.deleteOne({_id: taskID});
+        if(task) {
+            return res.status(200).send({message: 'Delete Successfully', taskID, status: 200});
+        } else {
+            return res.status(400).send('Could not delete the task');
+        }
+    } catch(e) {
+        console.log(e);
+        return res.status(400).send('Something went wrong');
+    }
+})
+
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
